@@ -51,3 +51,26 @@ Run it:
 `stack build && stack exec swf-exe`
 
 Good job!
+
+Code is also available Github [repository](https://github.com/pmtsoftware/swf).
+
+## Get rid of Prelude
+
+Because standard library called `Prelude` is full of stuff we won't use we gonna replace it with something more useful.
+I prefer `Relude` but there are many good alternatives. With `Relude` we're not only avoiding polluting our namespace with unneeded functions but also
+reimporting things from packages like `containers`, `text`, etc. what means less `import`s in our codebase.
+Let's add `NoImplicitPrelude` extension to `package.yaml` file:
+```
+default-extensions:
+- NoImplicitPrelude
+```
+and `relude` package to dependencies list:
+```
+dependencies:
+- base >= 4.7 && < 5
+- relude
+```
+But now our code breaks due to fact that GHC doesn't know where to find `putStrLn` function.
+We have to add `import Relude` to `Lib.hs` and `Main.hs`.
+Now `stack build` finishes successfully.
+Looks good!
