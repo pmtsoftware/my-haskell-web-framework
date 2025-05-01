@@ -17,8 +17,8 @@ In fact it should work also on BSD-like systems, MacOS and Windows (if you like 
 2. Haskell platform: when on linux I use [ghcup](https://www.haskell.org/ghcup) to install haskell tools.
 After installation run `ghcup tui` to install [GHC](https://www.haskell.org/ghc/), [cabal](https://www.haskell.org/cabal/), [Stack](https://docs.haskellstack.org/) and [HLS](https://github.com/haskell/haskell-language-server).
 I use following versions:
-* GHC: 9.4.8
-* cabal: 3.10.3.0
+* GHC: 9.6.6
+* cabal: 3.12.1.0
 * Stack: 3.3.1
 * HLS: 2.9.0.1
 Try `ghc --version` in terminal. If everything works you should see something similar to `9.4.8`.
