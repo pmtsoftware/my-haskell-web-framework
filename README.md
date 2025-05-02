@@ -5,7 +5,7 @@ Series of blog posts about creating web framework in Haskell from scratch.
 ## Introduction
 
 We're going to build and test our own web framework. Later we will create some simple app
-and check how we can scale it and what is the limit.
+and check how we can scale it and what are the limits.
 
 ## Prerequisites
 
@@ -31,7 +31,7 @@ That's the bare minimal stuff we need to start. Other tools (like database etc.)
 ## Hello world
 
 Let's start with something really simple. In first step we need to setup our project.
-Let's call it **swf** as abbreviation of Simple Web framework:
+Let's call it **swf** as abbreviation of Simple Web Framework:
 ```
 stack --resolver lts-21.25 new swf new-template`.
 cd swf
@@ -59,7 +59,7 @@ Code is also available Github [repository](https://github.com/pmtsoftware/swf).
 Because standard library called `Prelude` is full of stuff we won't use we gonna replace it with something more useful.
 I prefer `Relude` but there are many good alternatives. With `Relude` we're not only avoiding polluting our namespace with unneeded functions but also
 reimporting things from packages like `containers`, `text`, etc. what means less `import`s in our codebase.
-Let's add `NoImplicitPrelude` extension to `package.yaml` file:
+Let's add `NoImplicitPrelude` extension to `package.yaml`:
 ```
 default-extensions:
 - NoImplicitPrelude
@@ -73,4 +73,46 @@ dependencies:
 But now our code breaks due to fact that GHC doesn't know where to find `putStrLn` function.
 We have to add `import Relude` to `Lib.hs` and `Main.hs`.
 Now `stack build` finishes successfully.
-Looks good!
+So far so good!
+
+## HTTP server
+
+I'm going to use [scotty](https://github.com/scotty-web/scotty).
+Add scotty to dependencies list in executables section of `package.yaml`:
+```
+executables:
+  swf-exe:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - swf
+    - scotty
+```
+Run `stack build`.
+Now let's turn our tui _hello-world_ app into web app. Run `scotty` with proper GET handler in `Main.hs`:
+```
+{-# LANGUAGE OverloadedStrings #-}
+
+module Main (main) where
+
+import Relude
+
+import Lib
+
+import qualified Web.Scotty as Scotty
+
+main :: IO ()
+main = Scotty.scotty 3000 $
+    Scotty.get "/" $ do
+        Scotty.text "Hello World!!!"
+```
+
+Because non-root user cannot bind to port 80 we use port 3000 instead. So open browser and type _127.0.0.1:3000_ in address bar to see 
+"Hello world!!!" message. Let's move `OverloadedStrings` extension to `package.yaml`. We will use it very often so it's wise to enable it for all modules.
+Also `import Lib` is unnecessary so removing it will get rid of compiler warning.
+
+[PR](https://github.com/pmtsoftware/swf/pull/1)
