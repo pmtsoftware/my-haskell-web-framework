@@ -123,3 +123,33 @@ Web application which renders only text is quite poor so let's introduce some HT
 haskell code. Let's also add bootstrap styles to make our html a little bit nicer.
 
 Commit: [ffba758](https://github.com/pmtsoftware/swf/commit/ffba75824a1b3ec9dd330a8e65dc2036562905a4).
+
+## Database
+
+We will use PostreSQL as our database. For now all our framework needs is connection string to postgresql database.
+For development purpose I'm going to use local server. To install just follow installation instruction.
+In order to create database use `psql` tool. In terminal type `sudo su postgres` and then `psql`.
+
+Create database:
+```
+CREATE DATABSE swf;
+```
+Create database user:
+```
+CREATE USER swf PASSWORD 'swf';
+```
+Add access to database:
+```
+GRANT ALL PRIVILEGES ON DATABASE swf TO swf;
+```
+In order to connect `swf` user to db server it might be necessary to modify `/var/lib/pgsql/data/pg_hba.conf` file.
+In my case I changed method to `trust` for local Unix domain socket connections:
+```
+local   all             all                                     trust
+```
+Restart postgresql service:
+```
+sudo systemctl restart postgresql
+```
+Connect to db `psql -d swf -U swf`.
+Database is ready.
