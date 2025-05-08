@@ -116,3 +116,10 @@ Because non-root user cannot bind to port 80 we use port 3000 instead. So open b
 Also `import Lib` is unnecessary so removing it will get rid of compiler warning.
 
 [PR](https://github.com/pmtsoftware/swf/pull/1)
+
+## Rendering HTML
+
+Web application which renders only text is quite poor so let's introduce some HTML. We will use blaze-html which is a [combinatory library](https://en.wikipedia.org/wiki/Combinator_library). Most web frameworks use some kind of templating system (like jsx, etc.) but in our framework building html is just as simple as writing 
+haskell code. Let's also add bootstrap styles to make our html a little bit nicer.
+
+Commit: [ffba758](https://github.com/pmtsoftware/swf/commit/ffba75824a1b3ec9dd330a8e65dc2036562905a4).
