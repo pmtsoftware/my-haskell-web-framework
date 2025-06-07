@@ -138,8 +138,9 @@ Create database user:
 ```
 CREATE USER swf PASSWORD 'swf';
 ```
-Add access to database:
+Change owner and add access to database:
 ```
+ALTER DATABASE swf OWNER TO swf;
 GRANT ALL PRIVILEGES ON DATABASE swf TO swf;
 ```
 In order to connect `swf` user to db server it might be necessary to modify `/var/lib/pgsql/data/pg_hba.conf` file.
